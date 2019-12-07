@@ -1,0 +1,384 @@
+
+drop table if exists airport;
+drop table if exists airline_company;
+drop table if exists airplane;
+drop table if exists access;
+drop table if exists seat;
+drop table if exists ticket;
+drop table if exists passenger;
+drop table if exists flight_trip;
+drop table if exists user_login;
+drop table if exists voyage;
+
+
+create table airport(
+	airport_id varchar(100), 
+	airport_name varchar(100), 
+	airport_city varchar(100),
+	airport_country varchar(100),
+	primary key(airport_id)
+);
+
+INSERT INTO AIRPORT VALUES( 'DELHI' , 'Indira Gandhi International Airport', 'New Delhi','India');
+INSERT INTO AIRPORT VALUES( 'COCHIN' , 'Cochin International Airport', 'Kochi','India');
+INSERT INTO AIRPORT VALUES( 'CALICUT' , 'Calicut International Airport','Kozhikode','India');
+INSERT INTO AIRPORT VALUES( 'JAIPUR' , 'Jaipur International Airport','Jaipur','India');
+INSERT INTO AIRPORT VALUES( 'MUMBAI' , 'Chhatrapati Shivaji International Airport', 'Mumbai', 'India');
+INSERT INTO AIRPORT VALUES( 'BANGALORE' , 'Kempegowda International Airport', 'Bangalore', 'India');
+INSERT INTO AIRPORT VALUES( 'HYDERABAD' ,'Rajiv Gandhi International Airport', 'Hyderabad', 'India');
+
+
+create table airline_company(
+	company_id varchar(100), 
+	company_name varchar(100), 
+	primary key(company_id)
+);
+
+INSERT INTO AIRLINE_COMPANY VALUES( 'AA' , 'Air Asia');
+INSERT INTO AIRLINE_COMPANY VALUES( 'AI' , 'Air India');
+INSERT INTO AIRLINE_COMPANY VALUES( 'IG' , 'Indigo');
+INSERT INTO AIRLINE_COMPANY VALUES( 'JA' , 'Jet Airways');
+INSERT INTO AIRLINE_COMPANY VALUES( 'SJ' , 'Spice Jet');
+
+
+create table aeroplane(
+	aeroplane_no varchar(100), 
+	capacity varchar(100),
+	company_id varchar(100),
+	primary key(aeroplane_no)
+);
+INSERT INTO aeroplane VALUES( 'AA751' , 140, 'AA' );
+INSERT INTO aeroplane VALUES( 'AI851' , 160, 'AI' );
+INSERT INTO aeroplane VALUES( 'IG100' , 240, 'IG' );
+INSERT INTO aeroplane VALUES( 'JA785' , 260, 'JA' );
+INSERT INTO aeroplane VALUES( 'SJ747' , 100, 'SJ' );
+INSERT INTO aeroplane VALUES( 'JA385' , 260, 'JA' );
+INSERT INTO aeroplane VALUES( 'IG300' , 100, 'IG' );
+
+create table access(
+	airport varchar(100), 
+	aeroplane varchar(100),
+	primary key(airport,aeroplane)
+);
+INSERT INTO access VALUES( 'JAIPUR','AA751' );
+INSERT INTO access VALUES( 'MUMBAI','AA751' );
+INSERT INTO access VALUES( 'JAIPUR','AI851' );
+INSERT INTO access VALUES( 'DELHI', 'IG100' );
+INSERT INTO access VALUES( 'MUMBAI','IG100' );
+INSERT INTO access VALUES( 'JAIPUR','JA785' );
+INSERT INTO access VALUES( 'CALICUT','JA785' );
+INSERT INTO access VALUES( 'JAIPUR','SJ747' );
+INSERT INTO access VALUES( 'CALICUT','SJ747' );
+INSERT INTO access VALUES( 'BANGALORE','JA385' );
+INSERT INTO access VALUES( 'CALICUT','JA385' );
+INSERT INTO access VALUES( 'HYDERABAD','IG300' );
+INSERT INTO access VALUES( 'BANGALORE','IG300' );
+
+create table seat(
+	aeroplane varchar(100),
+	availability boolean DEFAULT TRUE,
+	seat_no varchar(100) ,
+	seat_class varchar(100),
+	fare integer,
+	primary key(seat_no,aeroplane)
+);
+
+INSERT INTO SEAT VALUES( 'AI851' ,TRUE, 'A24','Economy',4700 );
+INSERT INTO SEAT VALUES( 'AI851' ,TRUE, 'A10','Economy',4700 );
+INSERT INTO SEAT VALUES( 'AI851' ,TRUE, 'A11','Economy',4700 );
+INSERT INTO SEAT VALUES( 'AI851' ,TRUE, 'B10','Business',13000 );
+INSERT INTO SEAT VALUES( 'AI851' ,TRUE, 'G11','Business',13000);
+INSERT INTO SEAT VALUES( 'AI851' ,TRUE, 'K10','Business',13000 );
+
+INSERT INTO SEAT VALUES( 'AA751' ,TRUE, 'A23','Economy',6000 );
+INSERT INTO SEAT VALUES( 'AA751' ,TRUE, 'A22','Economy',6000 );
+INSERT INTO SEAT VALUES( 'AA751' ,TRUE, 'A24','Economy',6000 );
+INSERT INTO SEAT VALUES( 'AA751' ,TRUE, 'C23','Business',14000 );
+INSERT INTO SEAT VALUES( 'AA751' ,TRUE, 'P22','Business',14000 );
+INSERT INTO SEAT VALUES( 'AA751' ,TRUE, 'Q24','Business',14000 );
+
+INSERT INTO SEAT VALUES( 'IG100' ,TRUE, 'A25','Economy',3300 );
+INSERT INTO SEAT VALUES( 'IG100' ,TRUE, 'A27','Economy',3300 );
+INSERT INTO SEAT VALUES( 'IG100' ,TRUE, 'A29','Economy',3300 );
+INSERT INTO SEAT VALUES( 'IG100' ,TRUE, 'B25','Business',15000 );
+INSERT INTO SEAT VALUES( 'IG100' ,TRUE, 'H27','Business',15000 );
+INSERT INTO SEAT VALUES( 'IG100' ,TRUE, 'L29','Business',15000 );
+
+INSERT INTO SEAT VALUES( 'IG300' ,TRUE, 'A25','Economy',3300 );
+INSERT INTO SEAT VALUES( 'IG300' ,TRUE, 'A27','Economy',3300 );
+INSERT INTO SEAT VALUES( 'IG300' ,TRUE, 'A29','Economy',3300 );
+INSERT INTO SEAT VALUES( 'IG300' ,TRUE, 'B25','Business',15000 );
+INSERT INTO SEAT VALUES( 'IG300' ,TRUE, 'H27','Business',15000 );
+INSERT INTO SEAT VALUES( 'IG300' ,TRUE, 'L29','Business',15000 );
+
+INSERT INTO SEAT VALUES( 'JA785' ,TRUE, 'A23','Economy', 4400);
+INSERT INTO SEAT VALUES( 'JA785' ,TRUE, 'A27','Economy',4400 );
+INSERT INTO SEAT VALUES( 'JA785' ,TRUE, 'A29','Economy',4400 );
+INSERT INTO SEAT VALUES( 'JA785' ,TRUE, 'B25','Business',12000 );
+INSERT INTO SEAT VALUES( 'JA785' ,TRUE, 'F27','Business',12000 );
+INSERT INTO SEAT VALUES( 'JA785' ,TRUE, 'O29','Business',12000 );
+
+INSERT INTO SEAT VALUES( 'SJ747' ,TRUE, 'A26','Economy' ,2000);
+INSERT INTO SEAT VALUES( 'SJ747' ,TRUE, 'A27','Economy' ,2000);
+INSERT INTO SEAT VALUES( 'SJ747' ,TRUE, 'A29','Economy' ,2000);
+INSERT INTO SEAT VALUES( 'SJ747' ,TRUE, 'N26','Business' ,7500);
+INSERT INTO SEAT VALUES( 'SJ747' ,TRUE, 'A24','Business' ,7500);
+INSERT INTO SEAT VALUES( 'SJ747' ,TRUE, 'M26','Business' ,7500);
+
+INSERT INTO SEAT VALUES( 'JA385' ,TRUE, 'A23','Economy', 4400);
+INSERT INTO SEAT VALUES( 'JA385' ,TRUE, 'A27','Economy',4400 );
+INSERT INTO SEAT VALUES( 'JA385' ,TRUE, 'A29','Economy',4400 );
+INSERT INTO SEAT VALUES( 'JA385' ,TRUE, 'B25','Business',12000 );
+INSERT INTO SEAT VALUES( 'JA385' ,TRUE, 'F27','Business',12000 );
+INSERT INTO SEAT VALUES( 'JA385' ,TRUE, 'O29','Business',12000 );
+
+create table ticket(
+	flight_trip_id varchar(100),
+	ssn varchar(100),
+	seat_no varchar(100) ,
+	aeroplane varchar(100),
+	primary key(seat_no, aeroplane, flight_trip_id)
+);
+
+create table passenger(
+	ssn varchar(100),
+	phone_no varchar(20),
+	fname varchar(100),
+	lname varchar(100),
+	nationality varchar(100),
+	gender varchar(100),
+primary key(ssn)
+);
+
+create table flight_trip(
+	flight_trip_id varchar(100),
+	voyage_id varchar(100), 
+	departure_airport varchar(100),
+	arrival_airport varchar(100),
+	journey_date varchar(100),
+	departure_time varchar(100),
+	arrival_time varchar(100),
+	email varchar(100),
+	primary key(flight_trip_id)
+);
+
+create table user_login(
+	email varchar(100),
+	pass varchar(100),
+	primary key(email)
+);
+
+create table voyage(
+voyage_id varchar(100), 
+distance varchar(100),
+aeroplane varchar(100),
+departure_airport varchar(100),
+arrival_airport varchar(100),
+journey_date varchar(100),
+arrival_time varchar(100),
+departure_time varchar(100),
+
+primary key(voyage_id)
+);
+
+INSERT INTO voyage VALUES ('M-D11',400,'AA751','MUMBAI','DELHI','11-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('M-D12',400,'AI851','MUMBAI','DELHI','12-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('M-D13',400,'AA751','MUMBAI','DELHI','13-12-2019','9AM','1PM');
+
+INSERT INTO voyage VALUES ('M-J10',300,'AA751','MUMBAI','JAIPUR','10-12-2019','9AM','2PM');
+INSERT INTO voyage VALUES ('M-J15',300,'AA751','MUMBAI','JAIPUR','15-12-2019','9AM','2PM');
+INSERT INTO voyage VALUES ('M-J29',300,'AA751','MUMBAI','JAIPUR','29-12-2019','9AM','2PM');
+
+INSERT INTO voyage VALUES ('M-C12',500,'AA751','MUMBAI','CALICUT','12-12-2019','9:25AM','3:15PM');
+INSERT INTO voyage VALUES ('M-C14',500,'AA751','MUMBAI','CALICUT','14-12-2019','9:25AM','3:15PM');
+INSERT INTO voyage VALUES ('M-C19',500,'AA751','MUMBAI','CALICUT','19-12-2019','9:25AM','3:15PM');
+
+INSERT INTO voyage VALUES ('M-K12',100,'AA751','MUMBAI','COCHIN','12-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('M-K16',100,'AA751','MUMBAI','COCHIN','16-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('M-K20',100,'AA751','MUMBAI','COCHIN','20-12-2019','9AM','3PM');
+
+INSERT INTO voyage VALUES ('M-B12',700,'AA751','MUMBAI','BANGALORE','12-12-2019','10:15AM','6PM');
+INSERT INTO voyage VALUES ('M-B17',700,'IG100','MUMBAI','BANGALORE','17-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('M-B21',700,'AA751','MUMBAI','BANGALORE','21-12-2019','9AM','3PM');
+
+INSERT INTO voyage VALUES ('M-H12',600,'AA751','MUMBAI','HYDERABAD','12-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('M-H13',600,'AA751','MUMBAI','HYDERABAD','13-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('M-H16',600,'AA751','MUMBAI','HYDERABAD','16-12-2019','9AM','3PM');
+
+INSERT INTO voyage VALUES ('J-D11',400,'AI851','JAIPUR','DELHI','11-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('J-D13',400,'IG300','JAIPUR','DELHI','13-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('J-D15',400,'AI851','JAIPUR','DELHI','15-12-2019','9AM','1PM');
+/*Jaipur to Calicut does not exist; user must manually book from Jaipur to Bangalore and from Bangalore to Calicut*/
+INSERT INTO voyage VALUES ('J-K10',1500,'AI851', 'JAIPUR','COCHIN','10-12-2019','10AM','4PM');
+INSERT INTO voyage VALUES ('J-K11',1500,'AI851', 'JAIPUR','COCHIN','11-12-2019','10AM','4PM');
+INSERT INTO voyage VALUES ('J-K14',1500,'AI851', 'JAIPUR','COCHIN','14-12-2019','10AM','4PM');
+
+INSERT INTO voyage VALUES ('J-M11',400,'AI851','JAIPUR','MUMBAI','11-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('J-M08',400,'AI851','JAIPUR','MUMBAI','08-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('J-M15',400,'AI851','JAIPUR','MUMBAI','15-12-2019','9AM','1PM');
+
+INSERT INTO voyage VALUES ('J-B11',1500,'IG300', 'JAIPUR','BANGALORE','11-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('J-B23',1500,'IG300', 'JAIPUR','BANGALORE','23-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('J-B12',1500,'IG300', 'JAIPUR','BANGALORE','12-12-2019','10AM','2PM');
+
+INSERT INTO voyage VALUES ('J-H12',1500,'AI851', 'JAIPUR','HYDERABAD','12-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('J-H14',1500,'AI851', 'JAIPUR','HYDERABAD','14-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('J-H18',1500,'JA785', 'JAIPUR','HYDERABAD','18-12-2019','9AM','1PM');
+
+INSERT INTO voyage VALUES ('D-M11',450,'IG100','DELHI','MUMBAI','11-12-2019','5AM','8AM');
+INSERT INTO voyage VALUES ('D-M12',450,'IG100','DELHI','MUMBAI','12-12-2019','5AM','8AM');
+INSERT INTO voyage VALUES ('D-M13',450,'IG100','DELHI','MUMBAI','13-12-2019','5AM','8AM');
+
+INSERT INTO voyage VALUES ('D-K12',450,'IG100','DELHI','COCHIN','12-12-2019','4AM','10AM');
+INSERT INTO voyage VALUES ('D-K14',450,'IG100','DELHI','COCHIN','14-12-2019','4AM','10AM');
+INSERT INTO voyage VALUES ('D-K15',450,'IG100','DELHI','COCHIN','15-12-2019','4AM','10AM');
+
+INSERT INTO voyage VALUES ('D-C12',500,'IG100','DELHI','CALICUT','12-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('D-C17',500,'IG100','DELHI','CALICUT','17-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('D-C30',500,'IG100','DELHI','CALICUT','30-12-2019','9AM','3PM');
+
+INSERT INTO voyage VALUES ('D-H13',450,'IG100','DELHI','HYDERABAD','13-12-2019','6AM','11AM');
+INSERT INTO voyage VALUES ('D-H12',450,'IG100','DELHI','HYDERABAD','12-12-2019','6AM','11AM');
+INSERT INTO voyage VALUES ('D-H10',450,'IG100','DELHI','HYDERABAD','10-12-2019','6AM','11AM');
+
+INSERT INTO voyage VALUES ('D-B11',1500,'IG100', 'DELHI','BANGALORE','11-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('D-B05',1500,'IG100', 'DELHI','BANGALORE','05-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('D-B09',1500,'IG100', 'DELHI','BANGALORE','09-12-2019','10AM','2PM');
+
+INSERT INTO voyage VALUES ('D-J12',1500,'IG100', 'DELHI','JAIPUR','12-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('D-J14',1500,'JA785', 'DELHI','JAIPUR','14-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('D-J15',1500,'IG100', 'DELHI','JAIPUR','15-12-2019','11AM','3PM');
+
+INSERT INTO voyage VALUES ('K-M11',450,'JA785','COCHIN','MUMBAI','11-12-2019','5:10AM','8:30AM');
+INSERT INTO voyage VALUES ('K-M14',450,'JA785','COCHIN','MUMBAI','14-12-2019','5:10AM','8:30AM');
+INSERT INTO voyage VALUES ('K-M18',450,'JA785','COCHIN','MUMBAI','18-12-2019','5:10AM','8:30AM');
+
+INSERT INTO voyage VALUES ('K-D12',450,'JA785','COCHIN','DELHI','12-12-2019','4AM','10AM');
+INSERT INTO voyage VALUES ('K-D13',450,'JA785','COCHIN','DELHI','13-12-2019','4AM','10AM');
+INSERT INTO voyage VALUES ('K-D14',450,'JA785','COCHIN','DELHI','14-12-2019','4AM','10AM');
+
+INSERT INTO voyage VALUES ('K-C12',500,'JA785','COCHIN','CALICUT','12-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('K-C13',500,'JA785','COCHIN','CALICUT','13-12-2019','9AM','3PM');
+INSERT INTO voyage VALUES ('K-C14',500,'JA785','COCHIN','CALICUT','14-12-2019','9AM','3PM');
+
+INSERT INTO voyage VALUES ('K-J13',450,'JA785','COCHIN','JAIPUR','13-12-2019','6AM','11AM');
+INSERT INTO voyage VALUES ('K-J14',450,'JA785','COCHIN','JAIPUR','14-12-2019','6AM','11AM');
+INSERT INTO voyage VALUES ('K-J15',450,'JA785','COCHIN','JAIPUR','15-12-2019','6AM','11AM');
+
+INSERT INTO voyage VALUES ('K-B11',1500,'JA785', 'COCHIN','BANGALORE','11-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('K-B13',1500,'JA785', 'COCHIN','BANGALORE','13-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('K-B14',1500,'JA785', 'COCHIN','BANGALORE','14-12-2019','10AM','2PM');
+
+INSERT INTO voyage VALUES ('K-H12',1500,'JA785', 'COCHIN','HYDERABAD','12-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('K-H17',1500,'JA785', 'COCHIN','HYDERABAD','17-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('K-H18',1500,'JA785', 'COCHIN','HYDERABAD','18-12-2019','9AM','1PM');
+
+
+
+INSERT INTO voyage VALUES ('C-J14',800,'SJ747','CALICUT','JAIPUR','14-12-2019','5AM','2PM');
+INSERT INTO voyage VALUES ('C-J16',800,'SJ747','CALICUT','JAIPUR','16-12-2019','5AM','2PM');
+INSERT INTO voyage VALUES ('C-J18',800,'SJ747','CALICUT','JAIPUR','18-12-2019','5AM','2PM');
+
+INSERT INTO voyage VALUES ('C-K14',200,'SJ747','CALICUT','COCHIN','14-12-2019','5AM','2PM');
+INSERT INTO voyage VALUES ('C-K16',200,'SJ747','CALICUT','COCHIN','16-12-2019','5AM','2PM');
+INSERT INTO voyage VALUES ('C-K18',200,'SJ747','CALICUT','COCHIN','18-12-2019','5AM','2PM');
+
+INSERT INTO voyage VALUES ('C-D15',1000,'SJ747','CALICUT','DELHI','15-12-2019','9AM','2PM');
+INSERT INTO voyage VALUES ('C-D12',1000,'SJ747','CALICUT','DELHI','12-12-2019','9AM','2PM');
+INSERT INTO voyage VALUES ('C-D11',1000,'SJ747','CALICUT','DELHI','11-12-2019','9AM','2PM');
+
+INSERT INTO voyage VALUES ('C-M16',1200,'SJ747','CALICUT','MUMBAI','16-12-2019','10AM','12:30PM');
+INSERT INTO voyage VALUES ('C-M20',1200,'SJ747','CALICUT','MUMBAI','20-12-2019','10AM','12:30PM');
+INSERT INTO voyage VALUES ('C-M24',1200,'SJ747','CALICUT','MUMBAI','24-12-2019','10AM','12:30PM');
+
+INSERT INTO voyage VALUES ('C-B11',1500,'SJ747', 'CALICUT','BANGALORE','11-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('C-B15',1500,'SJ747', 'CALICUT','BANGALORE','15-12-2019','10AM','2PM');
+INSERT INTO voyage VALUES ('C-B19',1500,'SJ747', 'CALICUT','BANGALORE','19-12-2019','10AM','2PM');
+
+INSERT INTO voyage VALUES ('C-H12',1500,'SJ747', 'CALICUT','HYDERABAD','12-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('C-H22',1500,'SJ747', 'CALICUT','HYDERABAD','22-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('C-H23',1500,'SJ747', 'CALICUT','HYDERABAD','23-12-2019','9AM','1PM');
+
+INSERT INTO voyage VALUES ('B-J14',800,'JA385','BANGALORE','JAIPUR','14-12-2019','5AM','2PM');
+INSERT INTO voyage VALUES ('B-J16',800,'JA385','BANGALORE','JAIPUR','16-12-2019','5AM','2PM');
+INSERT INTO voyage VALUES ('B-J17',800,'JA385','BANGALORE','JAIPUR','17-12-2019','5AM','2PM');
+
+INSERT INTO voyage VALUES ('B-C16',400,'JA385','BANGALORE','CALICUT','16-12-2019','5AM','7AM');
+INSERT INTO voyage VALUES ('B-C17',400,'JA385','BANGALORE','CALICUT','17-12-2019','5AM','7AM');
+INSERT INTO voyage VALUES ('B-C18',400,'JA385','BANGALORE','CALICUT','18-12-2019','5AM','7AM');
+
+INSERT INTO voyage VALUES ('B-K17',500,'JA385','BANGALORE','COCHIN','17-12-2019','6AM','11AM');
+INSERT INTO voyage VALUES ('B-K18',500,'JA385','BANGALORE','COCHIN','18-12-2019','6AM','11AM');
+INSERT INTO voyage VALUES ('B-K19',500,'JA385','BANGALORE','COCHIN','19-12-2019','6AM','11AM');
+
+INSERT INTO voyage VALUES ('B-M18',600,'JA385','BANGALORE','MUMBAI','18-12-2019','4AM','7AM');
+INSERT INTO voyage VALUES ('B-M19',600,'JA385','BANGALORE','MUMBAI','19-12-2019','4AM','7AM');
+INSERT INTO voyage VALUES ('B-M20',600,'JA385','BANGALORE','MUMBAI','20-12-2019','4AM','7AM');
+
+INSERT INTO voyage VALUES ('B-H12',1500,'JA385','BANGALORE','HYDERABAD','12-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('B-H13',1500,'JA385','BANGALORE','HYDERABAD','13-12-2019','9AM','1PM');
+INSERT INTO voyage VALUES ('B-H14',1500,'JA385','BANGALORE','HYDERABAD','14-12-2019','9AM','1PM');
+
+INSERT INTO voyage VALUES ('B-D15',1000,'JA385','BANGALORE','DELHI','15-12-2019','9:10AM','2:45PM');
+INSERT INTO voyage VALUES ('B-D16',1000,'JA385','BANGALORE','DELHI','16-12-2019','9:10AM','2:45PM');
+INSERT INTO voyage VALUES ('B-D17',1000,'JA385','BANGALORE','DELHI','17-12-2019','9:10AM','2:45PM');
+
+INSERT INTO voyage VALUES ('H-B17',300,'IG300','HYDERABAD','BANGALORE','17-12-2019','4PM','10PM');
+INSERT INTO voyage VALUES ('H-B18',300,'IG100','HYDERABAD','BANGALORE','18-12-2019','4PM','10PM');
+INSERT INTO voyage VALUES ('H-B19',300,'IG100','HYDERABAD','BANGALORE','19-12-2019','4PM','10PM');
+
+INSERT INTO voyage VALUES ('H-M18',700,'IG300','HYDERABAD','MUMBAI','18-12-2019','5PM','9PM');
+INSERT INTO voyage VALUES ('H-M19',700,'IG300','HYDERABAD','MUMBAI','19-12-2019','5PM','9PM');
+INSERT INTO voyage VALUES ('H-M15',700,'IG300','HYDERABAD','MUMBAI','15-12-2019','5PM','9PM');
+
+INSERT INTO voyage VALUES ('H-D19',2900,'IG300','HYDERABAD','DELHI','19-12-2019','4PM','11PM');
+INSERT INTO voyage VALUES ('H-D15',2900,'IG300','HYDERABAD','DELHI','15-12-2019','4PM','11PM');
+INSERT INTO voyage VALUES ('H-D13',2900,'IG300','HYDERABAD','DELHI','13-12-2019','4PM','11PM');
+
+INSERT INTO voyage VALUES ('H-J14',1200,'IG300','HYDERABAD','JAIPUR','14-12-2019','5AM','2PM');
+INSERT INTO voyage VALUES ('H-J15',1200,'IG300','HYDERABAD','JAIPUR','15-12-2019','5AM','2PM');
+INSERT INTO voyage VALUES ('H-J16',1200,'IG300','HYDERABAD','JAIPUR','16-12-2019','5AM','2PM');
+
+INSERT INTO voyage VALUES ('H-C16',400,'IG300','HYDERABAD','CALICUT','16-12-2019','5AM','7AM');
+INSERT INTO voyage VALUES ('H-C17',400,'IG300','HYDERABAD','CALICUT','17-12-2019','5AM','7AM');
+INSERT INTO voyage VALUES ('H-C18',400,'IG300','HYDERABAD','CALICUT','18-12-2019','5AM','7AM');
+
+INSERT INTO voyage VALUES ('H-K17',500,'IG300','HYDERABAD','COCHIN','17-12-2019','6AM','11AM');
+INSERT INTO voyage VALUES ('H-K18',500,'IG300','HYDERABAD','COCHIN','18-12-2019','6AM','11AM');
+INSERT INTO voyage VALUES ('H-K19',500,'IG300','HYDERABAD','COCHIN','19-12-2019','6AM','11AM');
+
+alter table aeroplane add
+foreign key(company_id) references airline_company(company_id);
+
+alter table access add
+foreign key(airport) references airport(airport_id);
+alter table access add
+foreign key(aeroplane) references aeroplane(aeroplane_no);
+
+alter table seat add
+foreign key(aeroplane) references aeroplane(aeroplane_no);
+
+alter table ticket add
+foreign key(flight_trip_id) references flight_trip(flight_trip_id);
+alter table ticket add
+foreign key(ssn) references passenger(ssn);
+alter table ticket add
+foreign key(aeroplane) references seat(aeroplane);
+alter table ticket add
+foreign key(seat_no) references seat(seat_no);
+
+alter table flight_trip add
+foreign key(email) references user_login(email); 
+
+
+
+alter table flight_trip add
+foreign key(voyage_id) references voyage(voyage_id); 
+
+
+alter table voyage add
+foreign key(aeroplane) references aeroplane(aeroplane_no); 
+alter table voyage add
+foreign key(arrival_airport) references airport(airport_id); 
+alter table voyage add
+foreign key(departure_airport) references airport(airport_id); 
